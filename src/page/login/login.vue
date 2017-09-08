@@ -1,3 +1,25 @@
+<!-- 
+1, 两个组件 headTop，alertTip如何使用？ 
+2, computed里面的属性计算，用在什么地方？
+    计算属性，顾名思义，是需要通过一个this.A属性计算得到，此属性，不需要在data中写入
+    建议使用场景：正则验证
+3，可以使用async，但是await用的时候，写在别的js中，import进来
+4，check方法，返回一个check对象5
+5，把api请求，写在了service.js 里面
+    好处：（1）请求写一次，复用多次 
+         （2）service.js 里面可以清晰看到用过哪些api，和后台给到的controller文档对应
+         （3）可以使用async，把service的js都改写成await方法
+    坏处： 怎样用 this.$http?
+    回答：
+    VueResource.post也是可以调用的.
+    vue只是把vueResource绑定到$http上.
+6，fetch和ajax的区别，fetch对于浏览器的要求
+    ie全挂/chrome>43/
+7,mapState, mapMutations
+8，善于使用  this.$router.go(-1);
+
+-->
+
 <template>
     <div class="loginContainer">
         <head-top :head-title="loginWay? '登录':'密码登录'" goBack="true">
@@ -88,6 +110,7 @@
             }
         },
         methods: {
+            // 应该是恢复record中的用户信息，为什么不用localStorage
             ...mapMutations([
                 'RECORD_USERINFO',
             ]),
@@ -137,6 +160,10 @@
             },
             //发送登录信息
             async mobileLogin(){
+                /**（1）两种登录方式的验证规则，不符合规则，return
+                /* （2）验证结束后，请求登录api，通过await方式，返回登录结果
+                /*  (3)同步对结果进行处理，不需要在response中
+                **/
                 if (this.loginWay) {
                     if (!this.rightPhoneNumber) {
                         this.showAlert = true;
